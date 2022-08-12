@@ -13,20 +13,23 @@ const form = ref({
       <div class="title-container">
         <h3 class="title">Java1234Mall-管理员登录</h3>
       </div>
-      <el-form-item prop="userName">
-        <el-icon :size="20" class="svg-container"> <edit /> </el-icon>
-        <el-input
-          v-model="form.userName"
-          placeholder="请输入用户名..."
-        ></el-input>
+      <el-form-item>
+        <!--        <el-icon :size="20" class="svg-container">-->
+        <!--          <edit />-->
+        <!--        </el-icon>-->
+        <svg-icon icon="user" class="svg-container"></svg-icon>
+        <el-input v-model="form.userName" placeholder="请输入用户名..." />
       </el-form-item>
-      <el-form-item prop="password">
-        <el-icon :size="20" class="svg-container"> <edit /> </el-icon>
+      <el-form-item>
+        <!--        <el-icon :size="20" class="svg-container">-->
+        <!--          <edit />-->
+        <!--        </el-icon>-->
+        <svg-icon icon="password" class="svg-container"></svg-icon>
         <el-input
           v-model="form.password"
-          placeholder="请输入密码..."
           type="password"
-        ></el-input>
+          placeholder="请输入密码.."
+        />
       </el-form-item>
       <el-button type="primary" class="login-button">登录</el-button>
     </el-form>
