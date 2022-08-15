@@ -1,26 +1,65 @@
 <script setup>
 import { ref } from 'vue'
 import { Edit } from '@element-plus/icons-vue'
+import axios from 'axios'
+import { ElMessage } from 'element-plus'
+import axiosUtil from '@/util/axios'
+
 const form = ref({
-  usernName: '',
+  userName: '',
   password: '',
 })
+
+const rules = ref({
+  userName: [{ required: true, message: '请输入用户名', trigger: 'blur' }],
+  password: [{ required: true, message: '请输入密码', trigger: 'blur' }],
+})
+
+const formRef = ref(null)
+
+const handleLogin = () => {
+  formRef.value.validate(async (valid) => {
+    if (valid) {
+      // axios.post("http://localhost:8080/adminLogin",form.value)
+      //   .then(response=>{
+      //     console.log(response.data);
+      //   }).catch(error=>{
+      //     ElMessage.error('系统运行出错，请联系管理员')
+      // })
+      try {
+        let result = await axiosUtil.post('adminLogin', form.value)
+        let data = result.data
+        if (data.code == 0) {
+          ElMessage.success('登录成功')
+          window.sessionStorage.setItem('token', data.token)
+        } else {
+          ElMessage.error(data.msg)
+        }
+      } catch (err) {
+        console.log('error:' + err)
+        ElMessage.error('服务器出错，请联系管理员！')
+      }
+    } else {
+      console.log('验证失败')
+    }
+  })
+}
 </script>
 
 <template>
   <div class="login-container">
-    <el-form ref="formRef" :model="form" class="login-form">
+    <el-form ref="formRef" :model="form" :rules="rules" class="login-form">
       <div class="title-container">
         <h3 class="title">Java1234Mall-管理员登录</h3>
       </div>
-      <el-form-item>
+      <el-form-item prop="userName">
         <!--        <el-icon :size="20" class="svg-container">-->
         <!--          <edit />-->
         <!--        </el-icon>-->
         <svg-icon icon="user" class="svg-container"></svg-icon>
         <el-input v-model="form.userName" placeholder="请输入用户名..." />
       </el-form-item>
-      <el-form-item>
+      <el-form-item prop="password">
         <!--        <el-icon :size="20" class="svg-container">-->
         <!--          <edit />-->
         <!--        </el-icon>-->
@@ -31,7 +70,11 @@ const form = ref({
           placeholder="请输入密码.."
         />
       </el-form-item>
-      <el-button type="primary" class="login-button">登录</el-button>
+      <el-form-item>
+        <el-button type="primary" class="login-button" @click="handleLogin"
+          >登录</el-button
+        >
+      </el-form-item>
     </el-form>
   </div>
 </template>
