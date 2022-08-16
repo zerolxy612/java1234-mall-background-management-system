@@ -4,6 +4,7 @@ import { Edit } from '@element-plus/icons-vue'
 import axios from 'axios'
 import { ElMessage } from 'element-plus'
 import axiosUtil from '@/util/axios'
+import router from '@/router'
 
 const form = ref({
   userName: '',
@@ -30,8 +31,9 @@ const handleLogin = () => {
         let result = await axiosUtil.post('adminLogin', form.value)
         let data = result.data
         if (data.code == 0) {
-          ElMessage.success('登录成功')
+          // ElMessage.success("登录成功");
           window.sessionStorage.setItem('token', data.token)
+          router.replace('/')
         } else {
           ElMessage.error(data.msg)
         }
