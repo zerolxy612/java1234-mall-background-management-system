@@ -30,8 +30,10 @@ const handleLogin = () => {
       try {
         let result = await axiosUtil.post('adminLogin', form.value)
         let data = result.data
+        console.log("data:"+data);
+        console.log(data.code);
         if (data.code == 0) {
-          // ElMessage.success("登录成功");
+          ElMessage.success("登录成功");
           window.sessionStorage.setItem('token', data.token)
           router.replace('/')
         } else {
